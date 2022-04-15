@@ -1,15 +1,43 @@
-# Stubs for pyspark.context (Python 3.5)
 #
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
 
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, TypeVar
+
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterable,
+    List,
+    NoReturn,
+    Optional,
+    Tuple,
+    Type,
+    TypeVar,
+)
+from types import TracebackType
 
 from py4j.java_gateway import JavaGateway, JavaObject  # type: ignore[import]
 
 from pyspark.accumulators import Accumulator, AccumulatorParam
 from pyspark.broadcast import Broadcast
 from pyspark.conf import SparkConf
-from pyspark.profiler import Profiler
-from pyspark.resource import ResourceInformation
+from pyspark.profiler import Profiler  # noqa: F401
+from pyspark.resource.information import ResourceInformation
 from pyspark.rdd import RDD
 from pyspark.serializers import Serializer
 from pyspark.status import StatusTracker
@@ -36,9 +64,14 @@ class SparkContext:
         jsc: Optional[JavaObject] = ...,
         profiler_cls: type = ...,
     ) -> None: ...
-    def __getnewargs__(self): ...
-    def __enter__(self): ...
-    def __exit__(self, type, value, trace): ...
+    def __getnewargs__(self) -> NoReturn: ...
+    def __enter__(self) -> SparkContext: ...
+    def __exit__(
+        self,
+        type: Optional[Type[BaseException]],
+        value: Optional[BaseException],
+        trace: Optional[TracebackType],
+    ) -> None: ...
     @classmethod
     def getOrCreate(cls, conf: Optional[SparkConf] = ...) -> SparkContext: ...
     def setLogLevel(self, logLevel: str) -> None: ...
@@ -137,6 +170,7 @@ class SparkContext:
     def addFile(self, path: str, recursive: bool = ...) -> None: ...
     def addPyFile(self, path: str) -> None: ...
     def setCheckpointDir(self, dirName: str) -> None: ...
+    def getCheckpointDir(self) -> Optional[str]: ...
     def setJobGroup(
         self, groupId: str, description: str, interruptOnCancel: bool = ...
     ) -> None: ...

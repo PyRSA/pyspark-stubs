@@ -1,5 +1,21 @@
-# Stubs for pyspark.sql.readwriter (Python 3.5)
 #
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
 
 from typing import overload
 from typing import Dict, List, Optional, Tuple, Union
@@ -51,7 +67,9 @@ class DataFrameReader(OptionUtils):
         dropFieldIfAllNull: Optional[Union[bool, str]] = ...,
         encoding: Optional[str] = ...,
         locale: Optional[str] = ...,
-        recursiveFileLookup: Optional[bool] = ...,
+        pathGlobFilter: Optional[Union[bool, str]] = ...,
+        recursiveFileLookup: Optional[Union[bool, str]] = ...,
+        allowNonNumericNumbers: Optional[Union[bool, str]] = ...,
     ) -> DataFrame: ...
     def table(self, tableName: str) -> DataFrame: ...
     def parquet(self, *paths: str, **options: OptionalPrimitiveType) -> DataFrame: ...
@@ -60,7 +78,8 @@ class DataFrameReader(OptionUtils):
         paths: PathOrPaths,
         wholetext: bool = ...,
         lineSep: Optional[str] = ...,
-        recursiveFileLookup: Optional[bool] = ...,
+        pathGlobFilter: Optional[Union[bool, str]] = ...,
+        recursiveFileLookup: Optional[Union[bool, str]] = ...,
     ) -> DataFrame: ...
     def csv(
         self,
@@ -81,9 +100,9 @@ class DataFrameReader(OptionUtils):
         negativeInf: Optional[str] = ...,
         dateFormat: Optional[str] = ...,
         timestampFormat: Optional[str] = ...,
-        maxColumns: Optional[int] = ...,
-        maxCharsPerColumn: Optional[int] = ...,
-        maxMalformedLogPerPartition: Optional[int] = ...,
+        maxColumns: Optional[Union[int, str]] = ...,
+        maxCharsPerColumn: Optional[Union[int, str]] = ...,
+        maxMalformedLogPerPartition: Optional[Union[int, str]] = ...,
         mode: Optional[str] = ...,
         columnNameOfCorruptRecord: Optional[str] = ...,
         multiLine: Optional[Union[bool, str]] = ...,
@@ -93,12 +112,16 @@ class DataFrameReader(OptionUtils):
         emptyValue: Optional[str] = ...,
         locale: Optional[str] = ...,
         lineSep: Optional[str] = ...,
+        pathGlobFilter: Optional[Union[bool, str]] = ...,
+        recursiveFileLookup: Optional[Union[bool, str]] = ...,
+        unescapedQuoteHandling: Optional[str] = ...,
     ) -> DataFrame: ...
     def orc(
         self,
         path: PathOrPaths,
         mergeSchema: Optional[bool] = ...,
-        recursiveFileLookup: Optional[bool] = ...,
+        pathGlobFilter: Optional[Union[bool, str]] = ...,
+        recursiveFileLookup: Optional[Union[bool, str]] = ...,
     ) -> DataFrame: ...
     @overload
     def jdbc(
@@ -219,3 +242,17 @@ class DataFrameWriter(OptionUtils):
         mode: Optional[str] = ...,
         properties: Optional[Dict[str, str]] = ...,
     ) -> None: ...
+
+class DataFrameWriterV2:
+    def __init__(self, df: DataFrame, table: str) -> None: ...
+    def using(self, provider: str) -> DataFrameWriterV2: ...
+    def option(self, key: str, value: OptionalPrimitiveType) -> DataFrameWriterV2: ...
+    def options(self, **options: OptionalPrimitiveType) -> DataFrameWriterV2: ...
+    def tableProperty(self, property: str, value: str) -> DataFrameWriterV2: ...
+    def partitionedBy(self, col: Column, *cols: Column) -> DataFrameWriterV2: ...
+    def create(self) -> None: ...
+    def replace(self) -> None: ...
+    def createOrReplace(self) -> None: ...
+    def append(self) -> None: ...
+    def overwrite(self, condition: Column) -> None: ...
+    def overwritePartitions(self) -> None: ...
